@@ -1,25 +1,19 @@
-// ignore_for_file: require_trailing_commas
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 import 'dart:async';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 
+import 'firebase_config.dart';
 import 'tabs_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      options: const FirebaseOptions(
-    apiKey: 'AIzaSyAHAsf51D0A407EklG1bs-5wA7EbyfNFg0',
-    appId: '1:448618578101:ios:2bc5c1fe2ec336f8ac3efc',
-    messagingSenderId: '448618578101',
-    projectId: 'react-native-firebase-testing',
-  ));
+  await Firebase.initializeApp(options: DefaultFirebaseConfig.platformOptions);
   runApp(const MyApp());
 }
 
@@ -27,6 +21,8 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +31,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      navigatorObservers: <NavigatorObserver>[observer],
       home: MyHomePage(
         title: 'Firebase Analytics Demo',
         analytics: analytics,
+        observer: observer,
       ),
     );
   }
@@ -48,10 +46,12 @@ class MyHomePage extends StatefulWidget {
     Key? key,
     required this.title,
     required this.analytics,
+    required this.observer,
   }) : super(key: key);
 
   final String title;
   final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -77,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Only strings and numbers (ints & doubles) are supported for GA custom event parameters:
         // https://developers.google.com/analytics/devguides/collection/analyticsjs/custom-dims-mets#overview
         'bool': true.toString(),
+        'items': [itemCreator()]
       },
     );
     setMessage('logEvent succeeded');
@@ -112,30 +113,31 @@ class _MyHomePageState extends State<MyHomePage> {
     setMessage('setUserProperty succeeded');
   }
 
-  Item itemCreator() {
-    return Item(
-      affilitation: 'affil',
+  AnalyticsEventItem itemCreator() {
+    return AnalyticsEventItem(
+      affiliation: 'affil',
       coupon: 'coup',
-      creative_name: 'creativeName',
-      creative_slot: 'creativeSlot',
-      discount: 'disc',
+      creativeName: 'creativeName',
+      creativeSlot: 'creativeSlot',
+      discount: 2.22,
       index: 3,
-      item_brand: 'itemBrand',
-      item_category: 'itemCategory',
-      item_category2: 'itemCategory2',
-      item_category3: 'itemCategory3',
-      item_category4: 'itemCategory4',
-      item_category5: 'itemCategory5',
-      item_id: 'itemId',
-      item_list_id: 'itemListId',
-      item_list_name: 'itemListName',
-      item_name: 'itemName',
-      item_variant: 'itemVariant',
-      location_id: 'locationId',
-      price: 'pri',
-      promotion_id: 'promotionId',
-      promotion_name: 'promotionName',
-      quantity: 'quantity',
+      itemBrand: 'itemBrand',
+      itemCategory: 'itemCategory',
+      itemCategory2: 'itemCategory2',
+      itemCategory3: 'itemCategory3',
+      itemCategory4: 'itemCategory4',
+      itemCategory5: 'itemCategory5',
+      itemId: 'itemId',
+      itemListId: 'itemListId',
+      itemListName: 'itemListName',
+      itemName: 'itemName',
+      itemVariant: 'itemVariant',
+      locationId: 'locationId',
+      price: 9.99,
+      currency: 'USD',
+      promotionId: 'promotionId',
+      promotionName: 'promotionName',
+      quantity: 1,
     );
   }
 
@@ -178,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
       level: 5,
       character: 'witch doctor',
     );
-    await widget.analytics.logLogin(loginMethod: 'sign up');
+    await widget.analytics.logLogin(loginMethod: 'login');
     await widget.analytics.logPostScore(
       score: 1000000,
       level: 70,
@@ -202,10 +204,11 @@ class _MyHomePageState extends State<MyHomePage> {
       itemId: 'test item id',
     );
     await widget.analytics.logSelectPromotion(
-        creativeName: 'promotion name',
-        creativeSlot: 'promotion slot',
-        items: [itemCreator()],
-        locationId: 'United States');
+      creativeName: 'promotion name',
+      creativeSlot: 'promotion slot',
+      items: [itemCreator()],
+      locationId: 'United States',
+    );
     await widget.analytics.logSelectItem(
       items: [itemCreator(), itemCreator()],
       itemListName: 't-shirt',
@@ -254,9 +257,10 @@ class _MyHomePageState extends State<MyHomePage> {
       items: [itemCreator()],
     );
     await widget.analytics.logViewItemList(
-        itemListId: 't-shirt-4321',
-        itemListName: 'green t-shirt',
-        items: [itemCreator()]);
+      itemListId: 't-shirt-4321',
+      itemListName: 'green t-shirt',
+      items: [itemCreator()],
+    );
     await widget.analytics.logViewSearchResults(
       searchTerm: 'test search term',
     );
@@ -299,17 +303,22 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: _testSetUserProperty,
             child: const Text('Test setUserProperty'),
           ),
-          Text(_message,
-              style: const TextStyle(color: Color.fromARGB(255, 0, 155, 0))),
+          Text(
+            _message,
+            style: const TextStyle(color: Color.fromARGB(255, 0, 155, 0)),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute<TabsPage>(
+          Navigator.of(context).push(
+            MaterialPageRoute<TabsPage>(
               settings: const RouteSettings(name: TabsPage.routeName),
               builder: (BuildContext context) {
-                return const TabsPage();
-              }));
+                return TabsPage(widget.observer);
+              },
+            ),
+          );
         },
         child: const Icon(Icons.tab),
       ),

@@ -1,9 +1,10 @@
-// ignore_for_file: require_trailing_commas
 // Copyright 2021 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 // ignore_for_file: public_member_api_docs
+
+import 'dart:js_util' as util;
 
 import 'package:firebase_analytics_platform_interface/firebase_analytics_platform_interface.dart';
 import 'package:firebase_core_web/firebase_core_web_interop.dart';
@@ -15,9 +16,11 @@ export 'analytics_interop.dart';
 
 /// Given an AppJSImp, return the Analytics instance.
 Analytics getAnalyticsInstance([App? app]) {
-  return Analytics.getInstance(app != null
-      ? firebase_interop.analytics(app.jsObject)
-      : firebase_interop.analytics());
+  return Analytics.getInstance(
+    app != null
+        ? firebase_interop.analytics(app.jsObject)
+        : firebase_interop.analytics(),
+  );
 }
 
 class Analytics extends JsObjectWrapper<analytics_interop.AnalyticsJsImpl> {
@@ -36,9 +39,9 @@ class Analytics extends JsObjectWrapper<analytics_interop.AnalyticsJsImpl> {
   void logEvent({
     required String name,
     Map<String, Object?>? parameters,
-    CallOptions? callOptions,
+    AnalyticsCallOptions? callOptions,
   }) {
-    return jsObject.logEvent(name, parameters, callOptions);
+    return jsObject.logEvent(name, util.jsify(parameters ?? {}), callOptions);
   }
 
   void setAnalyticsCollectionEnabled({required bool enabled}) {
@@ -47,7 +50,7 @@ class Analytics extends JsObjectWrapper<analytics_interop.AnalyticsJsImpl> {
 
   void setCurrentScreen({
     String? screenName,
-    CallOptions? callOptions,
+    AnalyticsCallOptions? callOptions,
   }) {
     return jsObject.setCurrentScreen(
       screenName,
@@ -57,7 +60,7 @@ class Analytics extends JsObjectWrapper<analytics_interop.AnalyticsJsImpl> {
 
   void setUserId({
     String? id,
-    CallOptions? callOptions,
+    AnalyticsCallOptions? callOptions,
   }) {
     return jsObject.setUserId(
       id,
@@ -67,8 +70,8 @@ class Analytics extends JsObjectWrapper<analytics_interop.AnalyticsJsImpl> {
 
   void setUserProperty({
     required String name,
-    required Object value,
-    CallOptions? callOptions,
+    required String? value,
+    AnalyticsCallOptions? callOptions,
   }) {
     return jsObject.setUserProperties(
       {name: value},

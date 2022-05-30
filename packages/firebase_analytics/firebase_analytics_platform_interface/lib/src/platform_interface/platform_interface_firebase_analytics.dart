@@ -1,4 +1,3 @@
-// ignore_for_file: require_trailing_commas
 // Copyright 2021 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,7 +8,6 @@ import 'package:meta/meta.dart' show protected;
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import '../../firebase_analytics_platform_interface.dart';
-import '../method_channel/method_channel_firebase_analytics.dart';
 
 /// The interface that implementations of `firebase_analytics` must extend.
 ///
@@ -65,17 +63,19 @@ abstract class FirebaseAnalyticsPlatform extends PlatformInterface {
   }
 
   /// Logs the given event [name] with the given [parameters].
-  Future<void> logEvent(
-      {required String name,
-      Map<String, Object?>? parameters,
-      CallOptions? callOptions}) {
+  Future<void> logEvent({
+    required String name,
+    Map<String, Object?>? parameters,
+    AnalyticsCallOptions? callOptions,
+  }) {
     throw UnimplementedError('logEvent() is not implemented');
   }
 
   /// Sets whether analytics collection is enabled for this app.
   Future<void> setAnalyticsCollectionEnabled(bool enabled) {
     throw UnimplementedError(
-        'setAnalyticsCollectionEnabled() is not implemented');
+      'setAnalyticsCollectionEnabled() is not implemented',
+    );
   }
 
   /// Sets the user id.
@@ -83,7 +83,7 @@ abstract class FirebaseAnalyticsPlatform extends PlatformInterface {
   /// [callOptions] are for web platform only.
   Future<void> setUserId({
     String? id,
-    CallOptions? callOptions,
+    AnalyticsCallOptions? callOptions,
   }) {
     throw UnimplementedError('setUserId() is not implemented');
   }
@@ -96,7 +96,7 @@ abstract class FirebaseAnalyticsPlatform extends PlatformInterface {
   Future<void> setCurrentScreen({
     String? screenName,
     String? screenClassOverride,
-    CallOptions? callOptions,
+    AnalyticsCallOptions? callOptions,
   }) {
     throw UnimplementedError('setCurrentScreen() is not implemented');
   }
@@ -106,8 +106,8 @@ abstract class FirebaseAnalyticsPlatform extends PlatformInterface {
   /// [callOptions] are for web platform only.
   Future<void> setUserProperty({
     required String name,
-    required Object value,
-    CallOptions? callOptions,
+    required String? value,
+    AnalyticsCallOptions? callOptions,
   }) {
     throw UnimplementedError('setUserProperty() is not implemented');
   }
@@ -125,8 +125,8 @@ abstract class FirebaseAnalyticsPlatform extends PlatformInterface {
 
   /// Sets the applicable end user consent state.
   Future<void> setConsent({
-    ConsentStatus? adStorage,
-    ConsentStatus? analyticsStorage,
+    bool? adStorageConsentGranted,
+    bool? analyticsStorageConsentGranted,
   }) {
     throw UnimplementedError('setConsent() is not implemented');
   }

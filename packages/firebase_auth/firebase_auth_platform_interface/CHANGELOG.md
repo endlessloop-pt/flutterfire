@@ -1,3 +1,63 @@
+## 6.2.7
+
+ - Update a dependency to the latest release.
+
+## 6.2.6
+
+ - **REFACTOR**: fix analyzer issues introduced in Flutter 3.0.0 ([#8653](https://github.com/FirebaseExtended/flutterfire/issues/8653)). ([74e58171](https://github.com/FirebaseExtended/flutterfire/commit/74e5817159f18934ed0cd803f410ec96b372316a))
+
+## 6.2.5
+
+ - Update a dependency to the latest release.
+
+## 6.2.4
+
+ - Update a dependency to the latest release.
+
+## 6.2.3
+
+ - Update a dependency to the latest release.
+
+## 6.2.2
+
+ - Update a dependency to the latest release.
+
+## 6.2.1
+
+ - **FIX**: update all Dart SDK version constraints to Dart >= 2.16.0 (#8184). ([df4a5bab](https://github.com/FirebaseExtended/flutterfire/commit/df4a5bab3c029399b4f257a5dd658d302efe3908))
+
+## 6.2.0
+
+ - **FEAT**: refactor error handling to preserve stack traces on platform exceptions (#8156). ([6ac77d99](https://github.com/FirebaseExtended/flutterfire/commit/6ac77d99042de2a1950f89b35972e3ee1116dc9f))
+
+## 6.1.11
+
+ - Update a dependency to the latest release.
+
+## 6.1.10
+
+ - Update a dependency to the latest release.
+
+## 6.1.9
+
+ - **REFACTOR**: fix all `unnecessary_import` analyzer issues introduced with Flutter 2.8. ([7f0e82c9](https://github.com/FirebaseExtended/flutterfire/commit/7f0e82c978a3f5a707dd95c7e9136a3e106ff75e))
+
+## 6.1.8
+
+ - Update a dependency to the latest release.
+
+## 6.1.7
+
+ - **DOCS**: Fix typos and remove unused imports (#7504).
+
+## 6.1.6
+
+ - Update a dependency to the latest release.
+
+## 6.1.5
+
+ - Update a dependency to the latest release.
+
 ## 6.1.4
 
  - Update a dependency to the latest release.
