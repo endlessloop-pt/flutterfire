@@ -22,6 +22,8 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
   NSObject<FlutterPluginRegistrar> *_registrar;
   NSData *_apnsToken;
   NSDictionary *_initialNotification;
+  NSString *_initialNoticationID;
+  NSString *_notificationOpenedAppID;
 
 #ifdef __FF_NOTIFICATIONS_SUPPORTED_PLATFORM
   API_AVAILABLE(ios(10), macosx(10.14))
@@ -43,7 +45,6 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
   if (self) {
     _channel = channel;
     _registrar = registrar;
-
     // Application
     // Dart -> `getInitialNotification`
     // ObjC -> Initialize other delegates & observers
@@ -204,6 +205,7 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
     // If remoteNotification exists, it is the notification that opened the app.
     _initialNotification =
         [FLTFirebaseMessagingPlugin remoteMessageUserInfoToDict:remoteNotification];
+    _initialNoticationID = remoteNotification[@"gcm.message_id"];
   }
 
 #if TARGET_OS_OSX
@@ -239,15 +241,13 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
 
     if (notificationCenter.delegate != nil) {
 #if !TARGET_OS_OSX
-      // If the App delegate exists and it conforms to UNUserNotificationCenterDelegate then we
-      // don't want to replace it on iOS as the earlier call to `[_registrar
-      // addApplicationDelegate:self];` will automatically delegate calls to this plugin. If we
-      // replace it, it will cause a stack overflow as our original delegate forwarding handler
-      // below causes an infinite loop of forwarding. See
-      // https://github.com/FirebaseExtended/flutterfire/issues/4026.
-      if ([GULApplication sharedApplication].delegate != nil &&
-          [[GULApplication sharedApplication].delegate
-              conformsToProtocol:@protocol(UNUserNotificationCenterDelegate)]) {
+      // If a UNUserNotificationCenterDelegate is set and it conforms to
+      // FlutterAppLifeCycleProvider then we don't want to replace it on iOS as the earlier
+      // call to `[_registrar addApplicationDelegate:self];` will automatically delegate calls
+      // to this plugin. If we replace it, it will cause a stack overflow as our original
+      // delegate forwarding handler below causes an infinite loop of forwarding. See
+      // https://github.com/firebasefire/issues/4026.
+      if ([notificationCenter.delegate conformsToProtocol:@protocol(FlutterAppLifeCycleProvider)]) {
         // Note this one only executes if Firebase swizzling is **enabled**.
         shouldReplaceDelegate = NO;
       }
@@ -337,12 +337,12 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
              withCompletionHandler:(void (^)(void))completionHandler
     API_AVAILABLE(macos(10.14), ios(10.0)) {
   NSDictionary *remoteNotification = response.notification.request.content.userInfo;
+  _notificationOpenedAppID = remoteNotification[@"gcm.message_id"];
+  // [Endlessloop] We removed the check cause notifications sent from other providers
+  // never have the id, Klavyio for instance
   NSDictionary *notificationDict =
-      [FLTFirebaseMessagingPlugin remoteMessageUserInfoToDict:remoteNotification];
-  [_channel invokeMethod:@"Messaging#onMessageOpenedApp" arguments:notificationDict];
-  @synchronized(self) {
-    _initialNotification = notificationDict;
-  }
+          [FLTFirebaseMessagingPlugin remoteMessageUserInfoToDict:remoteNotification];
+      [_channel invokeMethod:@"Messaging#onMessageOpenedApp" arguments:notificationDict];
 
   // Forward on to any other delegates.
   if (_originalNotificationCenterDelegate != nil &&
@@ -998,11 +998,11 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
 
 - (nullable NSDictionary *)copyInitialNotification {
   @synchronized(self) {
-    if (_initialNotification != nil) {
-      NSDictionary *initialNotificationCopy = [_initialNotification copy];
-      _initialNotification = nil;
-      return initialNotificationCopy;
-    }
+    // [Endlessloop] We removed the check cause notifications sent from other providers
+    // never have the id, Klavyio for instance
+    NSDictionary *initialNotificationCopy = [_initialNotification copy];
+    _initialNotification = nil;
+    return initialNotificationCopy;
   }
 
   return nil;

@@ -11,7 +11,7 @@ class CollectionReferenceTemplate extends Template<CollectionData> {
 abstract class ${data.collectionReferenceInterfaceName}
       implements
         ${data.queryReferenceInterfaceName},
-        FirestoreCollectionReference<${data.querySnapshotName}> {
+        FirestoreCollectionReference<${data.type}, ${data.querySnapshotName}> {
   ${data.parent != null ? _subCollectionConstructors(data, asbtract: true) : _rootCollectionConstructors(data, abstract: true)}
 
   static ${data.type} fromFirestore(
@@ -27,6 +27,9 @@ abstract class ${data.collectionReferenceInterfaceName}
   ) {
     return ${data.toJson('value')};
   }
+
+  @override
+  CollectionReference<${data.type}> get reference;
 
 ${_parentProperty(data, abstract: true)}
 
