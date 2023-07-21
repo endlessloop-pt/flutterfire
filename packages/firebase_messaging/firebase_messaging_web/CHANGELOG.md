@@ -1,3 +1,115 @@
+## 3.5.4
+
+ - Update a dependency to the latest release.
+
+## 3.5.3
+
+ - Update a dependency to the latest release.
+
+## 3.5.2
+
+ - Update a dependency to the latest release.
+
+## 3.5.1
+
+ - Update a dependency to the latest release.
+
+## 3.5.0
+
+ - **FEAT**: update dependency constraints to `sdk: '>=2.18.0 <4.0.0'` `flutter: '>=3.3.0'` ([#10946](https://github.com/firebase/flutterfire/issues/10946)). ([2772d10f](https://github.com/firebase/flutterfire/commit/2772d10fe510dcc28ec2d37a26b266c935699fa6))
+
+## 3.4.0
+
+ - **FEAT**: upgrade to dart 3 compatible dependencies ([#10890](https://github.com/firebase/flutterfire/issues/10890)). ([4bd7e59b](https://github.com/firebase/flutterfire/commit/4bd7e59b1f2b09a2230c49830159342dd4592041))
+
+## 3.3.1
+
+ - Update a dependency to the latest release.
+
+## 3.3.0
+
+ - **FEAT**: bump dart sdk constraint to 2.18 ([#10618](https://github.com/firebase/flutterfire/issues/10618)). ([f80948a2](https://github.com/firebase/flutterfire/commit/f80948a28b62eead358bdb900d5a0dfb97cebb33))
+
+## 3.2.17
+
+ - Update a dependency to the latest release.
+
+## 3.2.16
+
+ - Update a dependency to the latest release.
+
+## 3.2.15
+
+ - Update a dependency to the latest release.
+
+## 3.2.14
+
+ - Update a dependency to the latest release.
+
+## 3.2.13
+
+ - Update a dependency to the latest release.
+
+## 3.2.12
+
+ - Update a dependency to the latest release.
+
+## 3.2.11
+
+ - Update a dependency to the latest release.
+
+## 3.2.10
+
+ - Update a dependency to the latest release.
+
+## 3.2.9
+
+ - Update a dependency to the latest release.
+
+## 3.2.8
+
+ - **FIX**: Retrieve `messageId` from `MessagePayload` received on message event for Web platform. ([#7846](https://github.com/firebase/flutterfire/issues/7846)). ([d796d33f](https://github.com/firebase/flutterfire/commit/d796d33f722d92404217f9b153c301ab4e50b370))
+
+## 3.2.7
+
+ - Update a dependency to the latest release.
+
+## 3.2.6
+
+ - Update a dependency to the latest release.
+
+## 3.2.5
+
+ - Update a dependency to the latest release.
+
+## 3.2.4
+
+ - Update a dependency to the latest release.
+
+## 3.2.3
+
+ - Update a dependency to the latest release.
+
+## 3.2.2
+
+ - Update a dependency to the latest release.
+
+## 3.2.1
+
+ - Update a dependency to the latest release.
+
+## 3.2.0
+
+ - **FEAT**: add support for exporting delivery metrics to BigQuery ([#9636](https://github.com/firebase/flutterfire/issues/9636)). ([170b99b9](https://github.com/firebase/flutterfire/commit/170b99b91573f28316172e43188d57ca14600446))
+
+## 3.1.6
+
+ - Update a dependency to the latest release.
+
+## 3.1.5
+
+ - Update a dependency to the latest release.
+
 ## 3.1.4
 
  - Update a dependency to the latest release.
@@ -208,7 +320,7 @@
 
 ## 0.1.0-dev.4
 
- - **FIX**: null check notification jsObject (#4624).
+ - **FIX**: null check fix that could happen when using verifyPhone notification jsObject (#4624).
 
 ## 0.1.0-dev.3
 

@@ -23,7 +23,8 @@ Before starting with Phone Authentication, ensure you have followed these steps:
 2. **Android**: If you haven't already set your app's SHA-1 hash in the [Firebase console](https://console.firebase.google.com/), do so.
    See [Authenticating Your Client](https://developers.google.com/android/guides/client-auth) for information about finding your app's SHA-1 hash.
 3. **iOS**: In Xcode, [enable push notifications](http://help.apple.com/xcode/mac/current/#/devdfd3d04a1) for your project & ensure
-   your APNs authentication key is [configured with Firebase Cloud Messaging (FCM)](/docs/cloud-messaging/ios/certs).
+   your APNs authentication key is [configured with Firebase Cloud Messaging (FCM)](/docs/cloud-messaging/ios/certs). Additionally, you must
+   [enable background modes](https://help.apple.com/xcode/mac/current/#/deve49d0ba96) for remote notifications.
    To view an in-depth explanation of this step, view the [Firebase iOS Phone Auth](/docs/auth/ios/phone-auth) documentation.
 4. **Web**: Ensure that you have added your applications domain on the [Firebase console](https://console.firebase.google.com/), under
    **OAuth redirect domains**.
@@ -55,6 +56,9 @@ await FirebaseAuth.instance.verifyPhoneNumber(
   codeAutoRetrievalTimeout: (String verificationId) {},
 );
 ```
+
+Note: Depending on your billing plan, you might be limited to a daily quota of
+SMS messages sent. See [Firebase Auth Limits](/docs/auth/limits#phone-auth).
 
 There are 4 separate callbacks that you must handle, each will determine how you update the application UI:
 

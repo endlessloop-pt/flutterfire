@@ -1,3 +1,133 @@
+## 3.3.4
+
+ - **DOCS**(crashlytics): illustrate different methods for recording crashes ([#11275](https://github.com/firebase/flutterfire/issues/11275)). ([d00c3ed2](https://github.com/firebase/flutterfire/commit/d00c3ed2a28656830ffd15f6737a4c8a607053b7))
+
+## 3.3.3
+
+ - Update a dependency to the latest release.
+
+## 3.3.2
+
+ - Update a dependency to the latest release.
+
+## 3.3.1
+
+ - Update a dependency to the latest release.
+
+## 3.3.0
+
+ - **FEAT**: update dependency constraints to `sdk: '>=2.18.0 <4.0.0'` `flutter: '>=3.3.0'` ([#10946](https://github.com/firebase/flutterfire/issues/10946)). ([2772d10f](https://github.com/firebase/flutterfire/commit/2772d10fe510dcc28ec2d37a26b266c935699fa6))
+ - **FEAT**: update librairies to be compatible with Flutter 3.10.0 ([#10944](https://github.com/firebase/flutterfire/issues/10944)). ([e1f5a5ea](https://github.com/firebase/flutterfire/commit/e1f5a5ea798c54f19d1d2f7b8f2250f8819f44b7))
+
+## 3.2.0
+
+ - **FIX**: add support for AGP 8.0 ([#10901](https://github.com/firebase/flutterfire/issues/10901)). ([a3b96735](https://github.com/firebase/flutterfire/commit/a3b967354294c295a9be8d699a6adb7f4b1dba7f))
+ - **FEAT**: upgrade to dart 3 compatible dependencies ([#10890](https://github.com/firebase/flutterfire/issues/10890)). ([4bd7e59b](https://github.com/firebase/flutterfire/commit/4bd7e59b1f2b09a2230c49830159342dd4592041))
+
+## 3.1.2
+
+ - **FIX**(readme): Update getting started link to reflect latest version ([#10700](https://github.com/firebase/flutterfire/issues/10700)). ([4e0daa4d](https://github.com/firebase/flutterfire/commit/4e0daa4dadab217b488f53414ff82775741f9606))
+
+## 3.1.1
+
+ - Update a dependency to the latest release.
+
+## 3.1.0
+
+ - **FEAT**: bump dart sdk constraint to 2.18 ([#10618](https://github.com/firebase/flutterfire/issues/10618)). ([f80948a2](https://github.com/firebase/flutterfire/commit/f80948a28b62eead358bdb900d5a0dfb97cebb33))
+
+## 3.0.17
+
+ - **FIX**(crashlytics,ios): fix Crashlytics obfuscation for iOS on the Flutter side ([#10566](https://github.com/firebase/flutterfire/issues/10566)). ([a4fa7eff](https://github.com/firebase/flutterfire/commit/a4fa7effbb1374d6241989fbbbb96d02b712a1c0))
+
+## 3.0.16
+
+ - Update a dependency to the latest release.
+
+## 3.0.15
+
+ - Update a dependency to the latest release.
+
+## 3.0.14
+
+ - Update a dependency to the latest release.
+
+## 3.0.13
+
+ - Update a dependency to the latest release.
+
+## 3.0.12
+
+ - **REFACTOR**: upgrade project to remove warnings from Flutter 3.7 ([#10344](https://github.com/firebase/flutterfire/issues/10344)). ([e0087c84](https://github.com/firebase/flutterfire/commit/e0087c845c7526c11a4241a26d39d4673b0ad29d))
+
+## 3.0.11
+
+ - **FIX**: improve reason field handling in recordError ([#10264](https://github.com/firebase/flutterfire/issues/10264)). ([8f670e4f](https://github.com/firebase/flutterfire/commit/8f670e4fe67869aaff83362a7df1afdf9bb41315))
+
+## 3.0.10
+
+ - **FIX**: improve reason field handling in recordError ([#10256](https://github.com/firebase/flutterfire/issues/10256)). ([48af8110](https://github.com/firebase/flutterfire/commit/48af8110b34d6c2e635ef5d1023086ab5eadcbf4))
+
+## 3.0.9
+
+ - Update a dependency to the latest release.
+
+## 3.0.8
+
+ - Update a dependency to the latest release.
+
+## 3.0.7
+
+ - Update a dependency to the latest release.
+
+## 3.0.6
+
+ - Update a dependency to the latest release.
+
+## 3.0.5
+
+ - Update a dependency to the latest release.
+
+## 3.0.4
+
+ - Update a dependency to the latest release.
+
+## 3.0.3
+
+ - **REFACTOR**: add `verify` to `QueryPlatform` and change internal `verifyToken` API to `verify` ([#9711](https://github.com/firebase/flutterfire/issues/9711)). ([c99a842f](https://github.com/firebase/flutterfire/commit/c99a842f3e3f5f10246e73f51530cc58c42b49a3))
+ - **DOCS**: Use `PlatformDispatcher.instance.onError` for async errors. Update Crashlytics example app to use "flutterfire-e2e-tests" project. ([#9669](https://github.com/firebase/flutterfire/issues/9669)). ([8a0caa05](https://github.com/firebase/flutterfire/commit/8a0caa05d5abf6fef5bf0e654654dcd0b6ec874a))
+
+## 3.0.2
+
+ - Update a dependency to the latest release.
+
+## 3.0.1
+
+ - Update a dependency to the latest release.
+
+## 3.0.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: Firebase iOS SDK version: `10.0.0` ([#9708](https://github.com/firebase/flutterfire/issues/9708)). ([9627c56a](https://github.com/firebase/flutterfire/commit/9627c56a37d657d0250b6f6b87d0fec1c31d4ba3))
+
+## 2.9.0
+
+ - **FEAT**: Send Flutter Build Id to Crashlytics to get --split-debug-info working ([#9409](https://github.com/firebase/flutterfire/issues/9409)). ([17931f30](https://github.com/firebase/flutterfire/commit/17931f307434c88e87318c97e2d81c7eb3219ed9))
+
+## 2.8.13
+
+ - **FIX**: parameter `information` accepts `Iterable<Object>` for further diagnostic logging information ([#9678](https://github.com/firebase/flutterfire/issues/9678)). ([2d2b5b03](https://github.com/firebase/flutterfire/commit/2d2b5b03901b68976047e5f2888beb0296f4af45))
+ - **DOCS**: add note for `crash()` that the app needs to be restarted to send a crash report ([#9586](https://github.com/firebase/flutterfire/issues/9586)). ([3a3e5212](https://github.com/firebase/flutterfire/commit/3a3e52123f04eac6d73c21474155e6e67cb357c1))
+
+## 2.8.12
+
+ - Update a dependency to the latest release.
+
+## 2.8.11
+
+ - Update a dependency to the latest release.
+
 ## 2.8.10
 
  - **FIX**: Replace null or empty stack traces with the current stack trace ([#9490](https://github.com/firebase/flutterfire/issues/9490)). ([c54a95f3](https://github.com/firebase/flutterfire/commit/c54a95f365c5a61d2df52fb89467ab6103aa0146))

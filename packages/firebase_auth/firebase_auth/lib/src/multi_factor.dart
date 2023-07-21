@@ -1,3 +1,7 @@
+// Copyright 2022, the Chromium project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 part of firebase_auth;
 
 /// Defines multi-factor related properties and operations pertaining to a [User].
@@ -29,6 +33,11 @@ class MultiFactor {
   /// [multiFactorInfo] is the [MultiFactorInfo] of the second factor to unenroll.
   /// Only one of [factorUid] or [multiFactorInfo] should be provided.
   Future<void> unenroll({String? factorUid, MultiFactorInfo? multiFactorInfo}) {
+    assert(
+      (factorUid != null && multiFactorInfo == null) ||
+          (factorUid == null && multiFactorInfo != null),
+      'Exactly one of `factorUid` or `multiFactorInfo` must be provided',
+    );
     return _delegate.unenroll(
       factorUid: factorUid,
       multiFactorInfo: multiFactorInfo,
@@ -60,7 +69,7 @@ class MultiFactorAssertion {
   final MultiFactorAssertionPlatform _delegate;
 
   MultiFactorAssertion._(this._delegate) {
-    MultiFactorAssertionPlatform.verifyExtends(_delegate);
+    MultiFactorAssertionPlatform.verify(_delegate);
   }
 }
 
@@ -71,7 +80,7 @@ class MultiFactorResolver {
   final MultiFactorResolverPlatform _delegate;
 
   MultiFactorResolver._(this._auth, this._delegate) {
-    MultiFactorResolverPlatform.verifyExtends(_delegate);
+    MultiFactorResolverPlatform.verify(_delegate);
   }
 
   /// List of [MultiFactorInfo] which represents the available

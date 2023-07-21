@@ -1,3 +1,7 @@
+// Copyright 2022, the Chromium project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -42,7 +46,7 @@ class FirestoreBuilder<Snapshot> extends StatefulWidget {
 
 class _FirestoreBuilderState<Snapshot>
     extends State<FirestoreBuilder<Snapshot>> {
-  FirestoreReference? _streamCacheKey;
+  FirestoreReference<Object?>? _streamCacheKey;
   late Stream<Object?> _streamCache;
   Stream<Object?> get _stream {
     final ref = _getReference(widget.ref);
@@ -54,7 +58,7 @@ class _FirestoreBuilderState<Snapshot>
   }
 
   var _lastSnapshot = const AsyncSnapshot<Object?>.nothing();
-  Stream? _listenableCacheKey;
+  Stream<Object?>? _listenableCacheKey;
   VoidCallback? _removeListener;
   void _listenStream(Stream<Object?> stream) {
     if (stream == _listenableCacheKey) {

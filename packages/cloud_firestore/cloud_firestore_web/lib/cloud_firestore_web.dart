@@ -26,7 +26,7 @@ import 'src/write_batch_web.dart';
 /// Web implementation for [FirebaseFirestorePlatform]
 /// delegates calls to firestore web plugin
 class FirebaseFirestoreWeb extends FirebaseFirestorePlatform {
-  /// instance of Analytics from the web plugin
+  /// instance of Firestore from the web plugin
   firestore_interop.Firestore? _webFirestore;
 
   firestore_interop.Settings? _settings;
@@ -192,6 +192,30 @@ class FirebaseFirestoreWeb extends FirebaseFirestorePlatform {
     firestore_interop.QuerySnapshot snapshot =
         await query.get(convertGetOptions(options));
 
-    return convertWebQuerySnapshot(this, snapshot);
+    return convertWebQuerySnapshot(
+      this,
+      snapshot,
+      getServerTimestampBehaviorString(
+        options.serverTimestampBehavior,
+      ),
+    );
+  }
+
+  @override
+  Future<void> setIndexConfiguration(String indexConfiguration) async {
+    return _delegate.setIndexConfiguration(
+      indexConfiguration,
+    );
+  }
+
+  @override
+  Future<void> setLoggingEnabled(bool enabled) async {
+    late final String value;
+    if (enabled) {
+      value = 'debug';
+    } else {
+      value = 'silent';
+    }
+    _delegate.setLoggingEnabled(value);
   }
 }

@@ -34,6 +34,10 @@ external PromiseJsImpl<void> clearIndexedDbPersistence(
 );
 
 @JS()
+external PromiseJsImpl<void> setIndexConfiguration(
+    FirestoreJsImpl firestore, String indexConfiguration);
+
+@JS()
 external CollectionReferenceJsImpl collection(
   FirestoreJsImpl firestore,
   String collectionPath,
@@ -81,7 +85,8 @@ external PromiseJsImpl<void> enableIndexedDbPersistence(
 
 @JS()
 external PromiseJsImpl<void> enableMultiTabIndexedDbPersistence(
-    FirestoreJsImpl firestore);
+  FirestoreJsImpl firestore,
+);
 
 @JS()
 external PromiseJsImpl<void> enableNetwork(FirestoreJsImpl firestore);
@@ -208,11 +213,9 @@ external bool snapshotEqual(
 @JS()
 external PromiseJsImpl<void> terminate(FirestoreJsImpl firestore);
 
+// Object type is forced to prevent JS interop from ignoring the value
 @JS()
-external PromiseJsImpl<void> updateDoc(
-  DocumentReferenceJsImpl reference,
-  dynamic data,
-);
+external Object get updateDoc;
 
 @JS()
 external PromiseJsImpl<void> waitForPendingWrites(FirestoreJsImpl firestore);
@@ -224,6 +227,16 @@ external QueryConstraintJsImpl where(
   dynamic value,
 );
 
+// Object type is forced to prevent JS interop from ignoring the value
+// when using it with an arbitrary number of arguments
+@JS()
+external Object get or;
+
+// Object type is forced to prevent JS interop from ignoring the value
+// when using it with an arbitrary number of arguments
+@JS()
+external Object get and;
+
 @JS()
 external WriteBatchJsImpl writeBatch(FirestoreJsImpl firestore);
 
@@ -234,7 +247,6 @@ abstract class FirestoreJsImpl {
 
 // TODO how?
 //   external void settings(Settings settings);
-
 }
 
 @JS('WriteBatch')
@@ -385,7 +397,7 @@ abstract class DocumentSnapshotJsImpl {
   external SnapshotMetadata get metadata;
   external DocumentReferenceJsImpl get ref;
 
-  external dynamic data();
+  external dynamic data([SnapshotOptions? options]);
   external bool exists();
   external dynamic get(/*String|FieldPath*/ dynamic fieldPath);
 }
@@ -475,7 +487,8 @@ abstract class TimestampJsImpl {
 @anonymous
 @JS()
 abstract class FirestoreError {
-  external String /*|'cancelled'|'unknown'|'invalid-argument'|'deadline-exceeded'|'not-found'|'already-exists'|'permission-denied'|'resource-exhausted'|'failed-precondition'|'aborted'|'out-of-range'|'unimplemented'|'internal'|'unavailable'|'data-loss'|'unauthenticated'*/ get code;
+  external String /*|'cancelled'|'unknown'|'invalid-argument'|'deadline-exceeded'|'not-found'|'already-exists'|'permission-denied'|'resource-exhausted'|'failed-precondition'|'aborted'|'out-of-range'|'unimplemented'|'internal'|'unavailable'|'data-loss'|'unauthenticated'*/
+      get code;
 
   external set code(
       /*|'cancelled'|'unknown'|'invalid-argument'|'deadline-exceeded'|'not-found'|'already-exists'|'permission-denied'|'resource-exhausted'|'failed-precondition'|'aborted'|'out-of-range'|'unimplemented'|'internal'|'unavailable'|'data-loss'|'unauthenticated'*/
@@ -651,3 +664,13 @@ external Object get arrayRemove;
 
 @JS()
 external Object get arrayUnion;
+
+@JS()
+external PromiseJsImpl<AggregateQuerySnapshotJsImpl> getCountFromServer(
+  QueryJsImpl query,
+);
+
+@JS('AggregateQuerySnapshot')
+abstract class AggregateQuerySnapshotJsImpl {
+  external Map<String, Object> data();
+}

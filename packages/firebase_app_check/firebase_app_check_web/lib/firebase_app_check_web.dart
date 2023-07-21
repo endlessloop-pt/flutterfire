@@ -6,9 +6,9 @@ import 'dart:async';
 
 import 'package:firebase_app_check_platform_interface/firebase_app_check_platform_interface.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core_web/firebase_core_web.dart';
 import 'package:firebase_core_web/firebase_core_web_interop.dart'
     as core_interop;
-import 'package:firebase_core_web/firebase_core_web.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'src/internals.dart';
@@ -28,7 +28,10 @@ class FirebaseAppCheckWeb extends FirebaseAppCheckPlatform {
 
   /// Called by PluginRegistry to register this plugin for Flutter Web
   static void registerWith(Registrar registrar) {
-    FirebaseCoreWeb.registerService('app-check');
+    FirebaseCoreWeb.registerService(
+      'app-check',
+      productNameOverride: 'app_check',
+    );
     FirebaseAppCheckPlatform.instance = FirebaseAppCheckWeb.instance;
   }
 
@@ -60,7 +63,11 @@ class FirebaseAppCheckWeb extends FirebaseAppCheckPlatform {
   }
 
   @override
-  Future<void> activate({String? webRecaptchaSiteKey}) async {
+  Future<void> activate({
+    String? webRecaptchaSiteKey,
+    AndroidProvider? androidProvider,
+    AppleProvider? appleProvider,
+  }) async {
     // activate API no longer exists, recaptcha key has to be passed on initialization of app-check instance.
     return convertWebExceptions<Future<void>>(() async {
       _webAppCheck ??= app_check_interop.getAppCheckInstance(
@@ -81,6 +88,15 @@ class FirebaseAppCheckWeb extends FirebaseAppCheckPlatform {
     return convertWebExceptions<Future<String?>>(() async {
       app_check_interop.AppCheckTokenResult result =
           await _delegate!.getToken(forceRefresh);
+      return result.token;
+    });
+  }
+
+  @override
+  Future<String> getLimitedUseToken() async {
+    return convertWebExceptions<Future<String>>(() async {
+      app_check_interop.AppCheckTokenResult result =
+          await _delegate!.getLimitedUseToken();
       return result.token;
     });
   }

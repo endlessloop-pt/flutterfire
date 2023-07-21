@@ -1,3 +1,118 @@
+## 0.7.3+4
+
+ - Update a dependency to the latest release.
+
+## 0.7.3+3
+
+ - Update a dependency to the latest release.
+
+## 0.7.3+2
+
+ - Update a dependency to the latest release.
+
+## 0.7.3+1
+
+ - Update a dependency to the latest release.
+
+## 0.7.3
+
+ - **FEAT**: update dependency constraints to `sdk: '>=2.18.0 <4.0.0'` `flutter: '>=3.3.0'` ([#10946](https://github.com/firebase/flutterfire/issues/10946)). ([2772d10f](https://github.com/firebase/flutterfire/commit/2772d10fe510dcc28ec2d37a26b266c935699fa6))
+
+## 0.7.2
+
+ - **FIX**: add support for AGP 8.0 ([#10901](https://github.com/firebase/flutterfire/issues/10901)). ([a3b96735](https://github.com/firebase/flutterfire/commit/a3b967354294c295a9be8d699a6adb7f4b1dba7f))
+ - **FEAT**: upgrade to dart 3 compatible dependencies ([#10890](https://github.com/firebase/flutterfire/issues/10890)). ([4bd7e59b](https://github.com/firebase/flutterfire/commit/4bd7e59b1f2b09a2230c49830159342dd4592041))
+
+## 0.7.1+1
+
+ - Update a dependency to the latest release.
+
+## 0.7.1
+
+ - **FEAT**: bump dart sdk constraint to 2.18 ([#10618](https://github.com/firebase/flutterfire/issues/10618)). ([f80948a2](https://github.com/firebase/flutterfire/commit/f80948a28b62eead358bdb900d5a0dfb97cebb33))
+
+## 0.7.0+16
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+15
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+14
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+13
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+12
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+11
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+10
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+9
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+8
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+7
+
+ - **FIX**: in app messages were suppressed on iOS ([#9959](https://github.com/firebase/flutterfire/issues/9959)). ([929e3686](https://github.com/firebase/flutterfire/commit/929e3686b76c1ce57cf87f19498cd52fb577a8c6))
+
+## 0.7.0+6
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+5
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+4
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+3
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+2
+
+ - Update a dependency to the latest release.
+
+## 0.7.0+1
+
+ - Update a dependency to the latest release.
+
+## 0.7.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: Firebase iOS SDK version: `10.0.0` ([#9708](https://github.com/firebase/flutterfire/issues/9708)). ([9627c56a](https://github.com/firebase/flutterfire/commit/9627c56a37d657d0250b6f6b87d0fec1c31d4ba3))
+
+## 0.6.0+27
+
+ - Update a dependency to the latest release.
+
+## 0.6.0+26
+
+ - Update a dependency to the latest release.
+
+## 0.6.0+25
+
+ - Update a dependency to the latest release.
+
 ## 0.6.0+24
 
  - Update a dependency to the latest release.

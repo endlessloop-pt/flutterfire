@@ -80,6 +80,7 @@ FirebaseAuthException getFirebaseAuthException(
         MultiFactorSessionWeb('web', resolverWeb.session),
         FirebaseAuthWeb.instance,
         resolverWeb,
+        auth,
       ),
     );
   }
@@ -100,10 +101,13 @@ ActionCodeInfo? convertWebActionCodeInfo(
     return null;
   }
 
-  return ActionCodeInfo(operation: 0, data: <String, dynamic>{
-    'email': webActionCodeInfo.data.email,
-    'previousEmail': webActionCodeInfo.data.previousEmail,
-  });
+  return ActionCodeInfo(
+    operation: ActionCodeInfoOperation.passwordReset,
+    data: ActionCodeInfoData(
+      email: webActionCodeInfo.data.email,
+      previousEmail: webActionCodeInfo.data.previousEmail,
+    ),
+  );
 }
 
 /// Converts a [auth_interop.AdditionalUserInfo] into a [AdditionalUserInfo].
@@ -126,16 +130,17 @@ AdditionalUserInfo? convertWebAdditionalUserInfo(
 IdTokenResult convertWebIdTokenResult(
   auth_interop.IdTokenResult webIdTokenResult,
 ) {
-  return IdTokenResult(<String, dynamic>{
-    'claims': webIdTokenResult.claims,
-    'expirationTimestamp':
-        webIdTokenResult.expirationTime.millisecondsSinceEpoch,
-    'issuedAtTimestamp': webIdTokenResult.issuedAtTime.millisecondsSinceEpoch,
-    'authTimestamp': webIdTokenResult.authTime.millisecondsSinceEpoch,
-    'signInProvider': webIdTokenResult.signInProvider,
-    'signInSecondFactor': null,
-    'token': webIdTokenResult.token,
-  });
+  return IdTokenResult(
+    PigeonIdTokenResult(
+      claims: webIdTokenResult.claims,
+      token: webIdTokenResult.token,
+      authTimestamp: webIdTokenResult.authTime.millisecondsSinceEpoch,
+      issuedAtTimestamp: webIdTokenResult.issuedAtTime.millisecondsSinceEpoch,
+      expirationTimestamp:
+          webIdTokenResult.expirationTime.millisecondsSinceEpoch,
+      signInProvider: webIdTokenResult.signInProvider,
+    ),
+  );
 }
 
 /// Converts a [ActionCodeSettings] into a [auth_interop.ActionCodeSettings].
@@ -260,7 +265,11 @@ auth_interop.AuthProvider convertPlatformAuthProvider(
     return oAuthProvider;
   }
 
-  throw FallThroughError();
+  if (authProvider is SAMLAuthProvider) {
+    return auth_interop.SAMLAuthProvider(authProvider.providerId);
+  }
+
+  throw UnsupportedError('Unknown AuthProvider: $authProvider.');
 }
 
 /// Converts a [auth_interop.AuthCredential] into a [AuthCredential].
@@ -278,16 +287,25 @@ AuthCredential? convertWebAuthCredential(
 
 /// Converts a [auth_interop.OAuthCredential] into a [AuthCredential].
 AuthCredential? convertWebOAuthCredential(
-  auth_interop.OAuthCredential? oAuthCredential,
+  auth_interop.UserCredential? userCredential,
 ) {
-  if (oAuthCredential == null) {
+  if (userCredential == null) {
     return null;
   }
 
-  return OAuthProvider(oAuthCredential.providerId).credential(
-    accessToken: oAuthCredential.accessToken,
-    secret: oAuthCredential.secret,
-    idToken: oAuthCredential.idToken,
+  final authCredential = auth_interop.OAuthProvider.credentialFromResult(
+    userCredential.jsObject,
+  );
+
+  if (authCredential == null) {
+    return null;
+  }
+
+  return OAuthProvider(authCredential.providerId).credential(
+    signInMethod: authCredential.signInMethod,
+    accessToken: authCredential.accessToken,
+    secret: authCredential.secret,
+    idToken: authCredential.idToken,
   );
 }
 

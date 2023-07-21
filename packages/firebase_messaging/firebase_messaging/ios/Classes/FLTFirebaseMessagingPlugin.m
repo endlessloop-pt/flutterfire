@@ -22,6 +22,13 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
   NSObject<FlutterPluginRegistrar> *_registrar;
   NSData *_apnsToken;
   NSDictionary *_initialNotification;
+  bool simulatorToken;
+
+  // Used to track if everything as been initialized before answering
+  // to the initialNotification request
+  BOOL _initialNotificationGathered;
+  FLTFirebaseMethodCallResult *_initialNotificationResult;
+
   NSString *_initialNoticationID;
   NSString *_notificationOpenedAppID;
 
@@ -43,8 +50,10 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
                    andFlutterPluginRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
   self = [super init];
   if (self) {
+    _initialNotificationGathered = NO;
     _channel = channel;
     _registrar = registrar;
+    simulatorToken = false;
     // Application
     // Dart -> `getInitialNotification`
     // ObjC -> Initialize other delegates & observers
@@ -109,7 +118,9 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
   [self ensureAPNSTokenSetting];
 
   if ([@"Messaging#getInitialMessage" isEqualToString:call.method]) {
-    methodCallResult.success([self copyInitialNotification]);
+    _initialNotificationResult = methodCallResult;
+    [self initialNotificationCallback];
+
   } else if ([@"Messaging#deleteToken" isEqualToString:call.method]) {
     [self messagingDeleteToken:call.arguments withMethodCallResult:methodCallResult];
   } else if ([@"Messaging#getAPNSToken" isEqualToString:call.method]) {
@@ -184,7 +195,7 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
   if ([[GULAppDelegateSwizzler sharedApplication].delegate
           respondsToSelector:messaging_didReceiveRegistrationTokenSelector]) {
     void (*usersDidReceiveRegistrationTokenIMP)(id, SEL, FIRMessaging *, NSString *) =
-        (typeof(usersDidReceiveRegistrationTokenIMP)) & objc_msgSend;
+        (typeof(usersDidReceiveRegistrationTokenIMP))&objc_msgSend;
     usersDidReceiveRegistrationTokenIMP([GULAppDelegateSwizzler sharedApplication].delegate,
                                         messaging_didReceiveRegistrationTokenSelector, messaging,
                                         fcmToken);
@@ -207,6 +218,8 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
         [FLTFirebaseMessagingPlugin remoteMessageUserInfoToDict:remoteNotification];
     _initialNoticationID = remoteNotification[@"gcm.message_id"];
   }
+  _initialNotificationGathered = YES;
+  [self initialNotificationCallback];
 
 #if TARGET_OS_OSX
   // For macOS we use swizzling to intercept as addApplicationDelegate does not exist on the macOS
@@ -331,7 +344,7 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
   }
 }
 
-// Called when a use interacts with a notification.
+// Called when a user interacts with a notification.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
     didReceiveNotificationResponse:(UNNotificationResponse *)response
              withCompletionHandler:(void (^)(void))completionHandler
@@ -609,7 +622,7 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
 - (void)messagingGetToken:(id)arguments withMethodCallResult:(FLTFirebaseMethodCallResult *)result {
   FIRMessaging *messaging = [FIRMessaging messaging];
 
-  // Keep behaviour consistent with android platform, newly retrieved tokens are streamed via
+  // Keep behavior consistent with android platform, newly retrieved tokens are streamed via
   // onTokenRefresh
   bool refreshToken = messaging.FCMToken == nil ? YES : NO;
   [messaging tokenWithCompletion:^(NSString *_Nullable token, NSError *_Nullable error) {
@@ -933,8 +946,8 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
 
         // Apple only
         // message.notification.apple.badge
-        if (apsAlertDict[@"badge"] != nil) {
-          notificationIOS[@"badge"] = apsAlertDict[@"badge"];
+        if (apsDict[@"badge"] != nil) {
+          notificationIOS[@"badge"] = [NSString stringWithFormat:@"%@", apsDict[@"badge"]];
         }
       }
 
@@ -985,6 +998,22 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
 - (void)ensureAPNSTokenSetting {
   FIRMessaging *messaging = [FIRMessaging messaging];
 
+  // With iOS SDK >= 10.4, an APNS token is required for getting/deleting token. We set a dummy
+  // token for the simulator for test environments. Historically, a simulator will not work for
+  // messaging. It will work if environment: iOS 16, running on macOS 13+ & silicon chip. We check
+  // the `_apnsToken` is nil. If it is, then the environment does not support and we set dummy
+  // token.
+#if TARGET_IPHONE_SIMULATOR
+  if (simulatorToken == false && _apnsToken == nil) {
+    NSString *str = @"fake-apns-token-for-simulator";
+    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [[FIRMessaging messaging] setAPNSToken:data type:FIRMessagingAPNSTokenTypeSandbox];
+  }
+  // We set this either way. We set dummy token once as `_apnsToken` could be nil next time
+  // which could possibly set dummy token unnecessarily
+  simulatorToken = true;
+#endif
+
   if (messaging.APNSToken == nil && _apnsToken != nil) {
 #ifdef DEBUG
     [[FIRMessaging messaging] setAPNSToken:_apnsToken type:FIRMessagingAPNSTokenTypeSandbox];
@@ -1006,6 +1035,13 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
   }
 
   return nil;
+}
+
+- (void)initialNotificationCallback {
+  if (_initialNotificationGathered && _initialNotificationResult != nil) {
+    _initialNotificationResult.success([self copyInitialNotification]);
+    _initialNotificationResult = nil;
+  }
 }
 
 - (NSDictionary *)NSDictionaryForNSError:(NSError *)error {

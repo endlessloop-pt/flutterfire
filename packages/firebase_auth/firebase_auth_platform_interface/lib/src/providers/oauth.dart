@@ -15,7 +15,7 @@ class OAuthProvider extends AuthProvider {
   OAuthProvider(String providerId) : super(providerId);
 
   List<String> _scopes = [];
-  Map<dynamic, dynamic> _parameters = {};
+  Map<String, String> _parameters = {};
 
   /// Returns the currently assigned scopes to this provider instance.
   List<String> get scopes {
@@ -23,7 +23,7 @@ class OAuthProvider extends AuthProvider {
   }
 
   /// Returns the parameters for this provider instance.
-  Map<dynamic, dynamic> get parameters {
+  Map<String, String> get parameters {
     return _parameters;
   }
 
@@ -42,7 +42,7 @@ class OAuthProvider extends AuthProvider {
   /// Sets the OAuth custom parameters to pass in a OAuth request for popup and
   /// redirect sign-in operations.
   OAuthProvider setCustomParameters(
-    Map<dynamic, dynamic> customOAuthParameters,
+    Map<String, String> customOAuthParameters,
   ) {
     _parameters = customOAuthParameters;
     return this;
@@ -54,10 +54,11 @@ class OAuthProvider extends AuthProvider {
     String? secret,
     String? idToken,
     String? rawNonce,
+    String? signInMethod,
   }) {
     return OAuthCredential(
       providerId: providerId,
-      signInMethod: 'oauth',
+      signInMethod: signInMethod ?? 'oauth',
       accessToken: accessToken,
       secret: secret,
       idToken: idToken,
@@ -76,15 +77,15 @@ class OAuthCredential extends AuthCredential {
   const OAuthCredential({
     required String providerId,
     required String signInMethod,
-    this.accessToken,
+    String? accessToken,
     this.idToken,
     this.secret,
     this.rawNonce,
-  }) : super(providerId: providerId, signInMethod: signInMethod);
-
-  /// The OAuth access token associated with the credential if it belongs to an
-  /// OAuth provider, such as `facebook.com`, `twitter.com`, etc.
-  final String? accessToken;
+  }) : super(
+          providerId: providerId,
+          signInMethod: signInMethod,
+          accessToken: accessToken,
+        );
 
   /// The OAuth ID token associated with the credential if it belongs to an
   /// OIDC provider, such as `google.com`.

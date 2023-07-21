@@ -1,3 +1,131 @@
+## 0.1.5+1
+
+ - Update a dependency to the latest release.
+
+## 0.1.5
+
+ - **FEAT**(app-check): support for `getLimitedUseToken()` API ([#11091](https://github.com/firebase/flutterfire/issues/11091)). ([9db9326f](https://github.com/firebase/flutterfire/commit/9db9326fe503c31299c9685449150e809543974e))
+
+## 0.1.4+3
+
+ - Update a dependency to the latest release.
+
+## 0.1.4+2
+
+ - Update a dependency to the latest release.
+
+## 0.1.4+1
+
+ - Update a dependency to the latest release.
+
+## 0.1.4
+
+ - **FEAT**: update dependency constraints to `sdk: '>=2.18.0 <4.0.0'` `flutter: '>=3.3.0'` ([#10946](https://github.com/firebase/flutterfire/issues/10946)). ([2772d10f](https://github.com/firebase/flutterfire/commit/2772d10fe510dcc28ec2d37a26b266c935699fa6))
+ - **FEAT**: update librairies to be compatible with Flutter 3.10.0 ([#10944](https://github.com/firebase/flutterfire/issues/10944)). ([e1f5a5ea](https://github.com/firebase/flutterfire/commit/e1f5a5ea798c54f19d1d2f7b8f2250f8819f44b7))
+
+## 0.1.3
+
+ - **FIX**: add support for AGP 8.0 ([#10901](https://github.com/firebase/flutterfire/issues/10901)). ([a3b96735](https://github.com/firebase/flutterfire/commit/a3b967354294c295a9be8d699a6adb7f4b1dba7f))
+ - **FEAT**: upgrade to dart 3 compatible dependencies ([#10890](https://github.com/firebase/flutterfire/issues/10890)). ([4bd7e59b](https://github.com/firebase/flutterfire/commit/4bd7e59b1f2b09a2230c49830159342dd4592041))
+
+## 0.1.2+3
+
+ - **FIX**(app-check): use correct `getAppCheckToken()` method. Print out debug token for iOS. ([#10819](https://github.com/firebase/flutterfire/issues/10819)). ([66909a9c](https://github.com/firebase/flutterfire/commit/66909a9c5b10e85f93565cbc308fdbee4ec6f607))
+
+## 0.1.2+2
+
+ - Update a dependency to the latest release.
+
+## 0.1.2+1
+
+ - **FIX**(app-check): fix 'Semantic Issue (Xcode): `new` is unavailable' on XCode 14.3 ([#10734](https://github.com/firebase/flutterfire/issues/10734)). ([cc6d1c28](https://github.com/firebase/flutterfire/commit/cc6d1c28193d5cdaaa564729340c380b5f632982))
+
+## 0.1.2
+
+ - **FEAT**: bump dart sdk constraint to 2.18 ([#10618](https://github.com/firebase/flutterfire/issues/10618)). ([f80948a2](https://github.com/firebase/flutterfire/commit/f80948a28b62eead358bdb900d5a0dfb97cebb33))
+
+## 0.1.1+14
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+13
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+12
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+11
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+10
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+9
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+8
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+7
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+6
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+5
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+4
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+3
+
+ - Update a dependency to the latest release.
+
+## 0.1.1+2
+
+ - **REFACTOR**: add `verify` to `QueryPlatform` and change internal `verifyToken` API to `verify` ([#9711](https://github.com/firebase/flutterfire/issues/9711)). ([c99a842f](https://github.com/firebase/flutterfire/commit/c99a842f3e3f5f10246e73f51530cc58c42b49a3))
+
+## 0.1.1+1
+
+ - Update a dependency to the latest release.
+
+## 0.1.1
+
+- Update a dependency to the latest release.
+
+## 0.1.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: Firebase iOS SDK version: `10.0.0` ([#9708](https://github.com/firebase/flutterfire/issues/9708)). ([9627c56a](https://github.com/firebase/flutterfire/commit/9627c56a37d657d0250b6f6b87d0fec1c31d4ba3))
+
+## 0.0.9+1
+
+ - Update a dependency to the latest release.
+
+## 0.0.9
+
+ - **FEAT**: provide `androidDebugProvider` boolean for android debug provider & update app check example app ([#9412](https://github.com/firebase/flutterfire/issues/9412)). ([f1f26748](https://github.com/firebase/flutterfire/commit/f1f26748615c7c9d406e1d3d605e2987e1134ee7))
+
+## 0.0.8
+
+ - **FEAT**: provide `androidDebugProvider` boolean for android debug provider & update app check example app ([#9412](https://github.com/firebase/flutterfire/issues/9412)). ([f1f26748](https://github.com/firebase/flutterfire/commit/f1f26748615c7c9d406e1d3d605e2987e1134ee7))
+
+## 0.0.7+2
+
+ - Update a dependency to the latest release.
+
 ## 0.0.7+1
 
  - Update a dependency to the latest release.

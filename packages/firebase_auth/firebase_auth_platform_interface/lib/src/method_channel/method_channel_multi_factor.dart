@@ -1,6 +1,11 @@
+// Copyright 2022, the Chromium project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:firebase_auth_platform_interface/src/method_channel/method_channel_firebase_auth.dart';
 import 'package:firebase_auth_platform_interface/src/method_channel/method_channel_user_credential.dart';
+import 'package:firebase_auth_platform_interface/src/method_channel/utils/exception.dart';
 import 'package:firebase_auth_platform_interface/src/method_channel/utils/pigeon_helper.dart';
 import 'package:firebase_auth_platform_interface/src/pigeon/messages.pigeon.dart';
 
@@ -10,10 +15,21 @@ class MethodChannelMultiFactor extends MultiFactorPlatform {
 
   final _api = MultiFactorUserHostApi();
 
+  PigeonFirebaseApp get pigeonDefault {
+    return PigeonFirebaseApp(
+      appName: auth.app.name,
+      tenantId: auth.tenantId,
+    );
+  }
+
   @override
   Future<MultiFactorSession> getSession() async {
-    final pigeonObject = await _api.getSession(auth.app.name);
-    return MultiFactorSession(pigeonObject.id);
+    try {
+      final pigeonObject = await _api.getSession(pigeonDefault);
+      return MultiFactorSession(pigeonObject.id);
+    } catch (e, stack) {
+      convertPlatformException(e, stack);
+    }
   }
 
   @override
@@ -35,14 +51,18 @@ class MethodChannelMultiFactor extends MultiFactorPlatform {
         throw ArgumentError('verificationId must not be null');
       }
 
-      await _api.enrollPhone(
-        auth.app.name,
-        PigeonPhoneMultiFactorAssertion(
-          verificationId: verificationId,
-          verificationCode: verificationCode,
-        ),
-        displayName,
-      );
+      try {
+        await _api.enrollPhone(
+          pigeonDefault,
+          PigeonPhoneMultiFactorAssertion(
+            verificationId: verificationId,
+            verificationCode: verificationCode,
+          ),
+          displayName,
+        );
+      } catch (e, stack) {
+        convertPlatformException(e, stack);
+      }
     } else {
       throw UnimplementedError(
         'Credential type ${_assertion.credential} is not supported yet',
@@ -54,7 +74,7 @@ class MethodChannelMultiFactor extends MultiFactorPlatform {
   Future<void> unenroll({
     String? factorUid,
     MultiFactorInfo? multiFactorInfo,
-  }) {
+  }) async {
     final uidToUnenroll = factorUid ?? multiFactorInfo?.uid;
     if (uidToUnenroll == null) {
       throw ArgumentError(
@@ -62,16 +82,24 @@ class MethodChannelMultiFactor extends MultiFactorPlatform {
       );
     }
 
-    return _api.unenroll(
-      auth.app.name,
-      uidToUnenroll,
-    );
+    try {
+      await _api.unenroll(
+        pigeonDefault,
+        uidToUnenroll,
+      );
+    } catch (e, stack) {
+      convertPlatformException(e, stack);
+    }
   }
 
   @override
   Future<List<MultiFactorInfo>> getEnrolledFactors() async {
-    final data = await _api.getEnrolledFactors(auth.app.name);
-    return multiFactorInfoPigeonToObject(data);
+    try {
+      final data = await _api.getEnrolledFactors(pigeonDefault);
+      return multiFactorInfoPigeonToObject(data);
+    } catch (e, stack) {
+      convertPlatformException(e, stack);
+    }
   }
 }
 
@@ -108,18 +136,22 @@ class MethodChannelMultiFactorResolver extends MultiFactorResolverPlatform {
         throw ArgumentError('verificationId must not be null');
       }
 
-      final data = await _api.resolveSignIn(
-        _resolverId,
-        PigeonPhoneMultiFactorAssertion(
-          verificationId: verificationId,
-          verificationCode: verificationCode,
-        ),
-      );
+      try {
+        final result = await _api.resolveSignIn(
+          _resolverId,
+          PigeonPhoneMultiFactorAssertion(
+            verificationId: verificationId,
+            verificationCode: verificationCode,
+          ),
+        );
 
-      MethodChannelUserCredential userCredential =
-          MethodChannelUserCredential(_auth, data.cast<String, dynamic>());
+        MethodChannelUserCredential userCredential =
+            MethodChannelUserCredential(_auth, result);
 
-      return userCredential;
+        return userCredential;
+      } catch (e, stack) {
+        convertPlatformException(e, stack);
+      }
     } else {
       throw UnimplementedError(
         'Credential type ${_assertion.credential} is not supported yet',
