@@ -422,7 +422,8 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
 - (void)application:(NSApplication *)application
     didReceiveRemoteNotification:(NSDictionary *)userInfo {
   // Only handle notifications from FCM.
-  if (userInfo[@"gcm.message_id"]) {
+  // Tymber patched
+  if (userInfo[@"gcm.message_id"] || YES) {
     NSDictionary *notificationDict =
         [FLTFirebaseMessagingPlugin remoteMessageUserInfoToDict:userInfo];
 
@@ -449,7 +450,8 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
   NSDictionary *notificationDict =
       [FLTFirebaseMessagingPlugin remoteMessageUserInfoToDict:userInfo];
   // Only handle notifications from FCM.
-  if (userInfo[@"gcm.message_id"]) {
+  // Tymber patched
+  if (userInfo[@"gcm.message_id"] || YES) {
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
       __block BOOL completed = NO;
 
